@@ -1,37 +1,65 @@
-﻿ /*
- Задача 68: Напишите программу вычисления функции Аккермана с помощью рекурсии. Даны два неотрицательных числа m и n.
- m = 2, n = 3 -> A(m,n) = 9
- m = 3, n = 2 -> A(m,n) = 29
+﻿/*
+ Задача 56: Задайте прямоугольный двумерный массив. Напишите программу, которая будет находить строку с наименьшей суммой элементов.
+ Например, задан массив:
+ 1 4 7 2
+ 5 9 2 3
+ 8 4 2 4
+ 5 2 6 7
+ Программа считает сумму элементов в каждой строке и выдаёт номер строки с наименьшей суммой элементов: 1 строка
  */
  
-Console.Write("Введите число M: ");
-int m = Convert.ToInt32(Console.ReadLine());
-
-Console.Write("Введите число N: ");
-int n = Convert.ToInt32(Console.ReadLine());
-
-AkkermanFunction(m,n);
+int[,] table = new int[4, 4];
+FillArrayRandom(table);
+PrintArray(table);
+Console.WriteLine();
+NumberRowMinSumElements(table);
 
 
-// вызов функции Аккермана
-void AkkermanFunction(int m, int n)
+// Функция вывода номера строки (не индекса) с наименьшей суммой элементов 
+void NumberRowMinSumElements(int[,] array)
 {
-    Console.Write(Akkerman(m, n)); 
+    int minRow = 0;
+    int minSumRow = 0;
+    int sumRow = 0;
+    for (int i = 0; i < table.GetLength(1); i++)
+    {
+        minRow += table[0, i];
+    }
+    for (int i = 0; i < table.GetLength(0); i++)
+    {
+        for (int j = 0; j < table.GetLength(1); j++) sumRow += table[i, j];
+        if (sumRow < minRow)
+        {
+            minRow = sumRow;
+            minSumRow = i;
+        }
+        sumRow = 0;
+    }
+    Console.Write($"{minSumRow + 1} строка");
 }
 
-// функция Аккермана
-int Akkerman(int m, int n)
+// Функция вывода двумерного массива
+void PrintArray(int[,] array)
 {
-    if (m == 0)
+    for (int i = 0; i < array.GetLength(0); i++)
     {
-        return n + 1;
-    }
-    else if (n == 0 && m > 0)
-    {
-        return Akkerman(m - 1, 1);
-    }
-    else
-    {
-        return (Akkerman(m - 1, Akkerman(m, n - 1)));
+        for (int j = 0; j < array.GetLength(1); j++)
+        {
+            Console.Write($"{array[i, j]} ");
+        }
+        Console.WriteLine();
     }
 }
+
+// Функция заполнения массива рандомно числами от 1 до 9
+void FillArrayRandom(int[,] array)
+{
+    for (int i = 0; i < array.GetLength(0); i++)
+    {
+        for (int j = 0; j < array.GetLength(1); j++)
+        {
+            array[i, j] = new Random().Next(1, 10);
+        }
+    }
+}
+
